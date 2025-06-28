@@ -1,104 +1,137 @@
-/* CSS Variables for Theme Management */
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  --primary: #1976d2;
+  --secondary: #90caf9;
+  --accent: #ffb300;
+  --bg: #ffffff;
+  --surface: #f5f7fa;
+  --sidebar-bg: #f8f9fa;
+  --error: #e53935;
+  --text: #222;
+  --text-secondary: #7a859a;
 }
 
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
-}
-
-.App {
-  text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+body, html, #root, .App {
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background: var(--surface);
+  color: var(--text);
+  margin: 0;
+  font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+a:hover {
+  color: var(--accent);
 }
 
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+input, textarea, button {
+  font-family: inherit;
+  font-size: inherit;
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
-}
-
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
+/* App header styles */
+header {
+  background: var(--primary);
+  color: #fff;
+  padding: 20px 28px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 24px;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+/* Sidebar styles */
+aside[aria-label="Sidebar"] {
+  background: var(--sidebar-bg);
+  border-right: 1px solid #e2e7f1;
+  min-width: 225px;
+  max-width: 300px;
 }
 
-.theme-toggle:active {
-  transform: translateY(0);
+aside ul {
+  padding: 0;
+  margin: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+aside li {
+  list-style: none;
+}
+
+aside button[aria-label^="View note"] {
+  outline: none;
+  transition: background 0.17s, border-color 0.17s;
+}
+
+aside button[aria-label^="View note"]:focus-visible {
+  background: #e3f2fd;
+  border-left: 5px solid var(--primary);
+}
+
+/* Main area */
+main {
+  background: var(--surface);
+}
+
+h2 {
+  margin: 0 0 18px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+/* Notes card/list */
+ul[style*="grid"] li > div {
+  outline: none;
+}
+
+ul[style*="grid"] li > div:focus-visible {
+  box-shadow: 0 0 0 2.5px var(--primary);
+}
+
+@media (max-width: 860px) {
+  aside[aria-label="Sidebar"] {
+    display: none !important;
   }
-  to {
-    transform: rotate(360deg);
+  main {
+    padding: 0 !important;
   }
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
+@media (max-width: 670px) {
+  header {
+    font-size: 18px;
+    padding: 17px 7px;
   }
+  aside[aria-label="Sidebar"] {
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+button, .btn {
+  transition: background .15s, color .18s, box-shadow .2s;
+}
+
+button[disabled] {
+  opacity: .68;
+  filter: grayscale(0.22);
+  cursor: not-allowed;
+}
+
+footer {
+  background: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Error banner */
+div[style*="background: #e53935"] {
+  animation: fadein-banner .7s;
+}
+@keyframes fadein-banner {
+  from { opacity: 0; transform: translateY(-20px);}
+  to { opacity: 1; transform: translateY(0);}
 }
