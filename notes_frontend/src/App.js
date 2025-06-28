@@ -426,7 +426,8 @@ function App() {
       const data = await resp.json();
       setNotes(data);
     } catch (e) {
-      setError(e?.message || "Error loading notes.");
+      // API errors for fetching the list
+      setError(e?.message || "Could not fetch notes.");
     } finally {
       setLoading(false);
     }
@@ -437,11 +438,11 @@ function App() {
     setLoading(true);
     try {
       const resp = await fetch(`${API_BASE}/${id}`);
-      if (!resp.ok) throw new Error("Could not fetch note details.");
+      if (!resp.ok) throw new Error("Could not fetch note details");
       const data = await resp.json();
       return data;
     } catch (e) {
-      setError(e?.message || "Error loading note.");
+      setError("Could not fetch note details");
       return null;
     } finally {
       setLoading(false);
@@ -462,13 +463,13 @@ function App() {
       });
       if (!resp.ok) {
         const err = await resp.json().catch(()=>null);
-        throw new Error(err?.message || "Failed to create note.");
+        throw new Error("Failed to create");
       }
       await fetchNotes();
       setViewMode("list");
       setSelectedId(null);
     } catch (e) {
-      setError(e?.message || "Failed to create.");
+      setError("Failed to create");
     } finally {
       setLoading(false);
     }
@@ -488,12 +489,12 @@ function App() {
       });
       if (!resp.ok) {
         const err = await resp.json().catch(()=>null);
-        throw new Error(err?.message || "Failed to update note.");
+        throw new Error("Failed to update note");
       }
       await fetchNotes();
       setViewMode("view");
     } catch (e) {
-      setError(e?.message || "Failed to update note.");
+      setError("Failed to update note");
     } finally {
       setLoading(false);
     }
@@ -507,13 +508,13 @@ function App() {
       const resp = await fetch(`${API_BASE}/${selectedId}`, { method: "DELETE" });
       if (!resp.ok) {
         const err = await resp.json().catch(()=>null);
-        throw new Error(err?.message || "Failed to delete note.");
+        throw new Error("Failed to delete note");
       }
       await fetchNotes();
       setViewMode("list");
       setSelectedId(null);
     } catch (e) {
-      setError(e?.message || "Failed to delete note.");
+      setError("Failed to delete note");
     } finally {
       setLoading(false);
     }
@@ -535,7 +536,7 @@ function App() {
     try {
       const note = await fetchNote(id);
       if (!note) {
-        setError("Could not load note.");
+        setError("Could not fetch note details");
         return;
       }
       setFormInitial({ title: note.title, content: note.content });
