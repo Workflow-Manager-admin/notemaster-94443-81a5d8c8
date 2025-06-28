@@ -257,9 +257,12 @@ function NoteView({ note, isEditing, onEdit, onBack, onDelete, loading }) {
   );
 }
 
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * Create/Edit note form (controlled).
+ * All labels are associated with input/textarea via htmlFor/id for accessibility and React Testing Library.
+ */
 function NoteForm({ initial, onSubmit, onCancel, loading, errors }) {
-  /** Create/Edit note form (controlled) */
   const [title, setTitle] = useState(initial.title || "");
   const [content, setContent] = useState(initial.content || "");
 
@@ -268,19 +271,26 @@ function NoteForm({ initial, onSubmit, onCancel, loading, errors }) {
     setContent(initial.content || "");
   }, [initial]);
 
+  // Use unique IDs for inputs to associate labels properly
+  const titleId = "noteform-title";
+  const contentId = "noteform-content";
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({ title, content });
   };
   return (
-    <section style={{
-      padding: "35px 24px",
-      maxWidth: 650,
-      margin: "0 auto"
-    }}>
-      <form style={{display: "flex", flexDirection: "column", gap: 18}} onSubmit={handleSubmit}>
-        <label style={{fontWeight: 600, marginBottom: 3}}>Title</label>
+    <section
+      style={{
+        padding: "35px 24px",
+        maxWidth: 650,
+        margin: "0 auto"
+      }}
+    >
+      <form style={{ display: "flex", flexDirection: "column", gap: 18 }} onSubmit={handleSubmit}>
+        <label htmlFor={titleId} style={{ fontWeight: 600, marginBottom: 3 }}>Title</label>
         <input
+          id={titleId}
           name="title"
           required
           style={{
@@ -296,10 +306,11 @@ function NoteForm({ initial, onSubmit, onCancel, loading, errors }) {
           onChange={e => setTitle(e.target.value)}
           aria-invalid={!!errors.title}
         />
-        {errors.title && <span style={{color: THEME.error, fontSize: 13, marginTop: -7}}>{errors.title}</span>}
+        {errors.title && <span style={{ color: THEME.error, fontSize: 13, marginTop: -7 }}>{errors.title}</span>}
 
-        <label style={{fontWeight: 600, marginBottom: 3, marginTop: 6}}>Content</label>
+        <label htmlFor={contentId} style={{ fontWeight: 600, marginBottom: 3, marginTop: 6 }}>Content</label>
         <textarea
+          id={contentId}
           name="content"
           required
           style={{
@@ -317,9 +328,9 @@ function NoteForm({ initial, onSubmit, onCancel, loading, errors }) {
           maxLength={3500}
           aria-invalid={!!errors.content}
         />
-        {errors.content && <span style={{color: THEME.error, fontSize: 13, marginTop: -7}}>{errors.content}</span>}
+        {errors.content && <span style={{ color: THEME.error, fontSize: 13, marginTop: -7 }}>{errors.content}</span>}
 
-        <div style={{display: "flex", gap: 15, marginTop: 6}}>
+        <div style={{ display: "flex", gap: 15, marginTop: 6 }}>
           <button
             type="submit"
             disabled={loading}
@@ -334,7 +345,8 @@ function NoteForm({ initial, onSubmit, onCancel, loading, errors }) {
               cursor: "pointer"
             }}
           >Save</button>
-          <button type="button"
+          <button
+            type="button"
             onClick={onCancel}
             disabled={loading}
             style={{
@@ -346,7 +358,8 @@ function NoteForm({ initial, onSubmit, onCancel, loading, errors }) {
               padding: "9px 22px",
               fontSize: 16,
               cursor: "pointer"
-            }}>Cancel</button>
+            }}
+          >Cancel</button>
         </div>
       </form>
     </section>
